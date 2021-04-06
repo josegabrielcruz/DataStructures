@@ -1,23 +1,30 @@
+/*
+Big 0 of Singly Linked List
+Insertion - 0(1)
+Removal   - removing from beginning =  O(1)
+            removing from the end   =  O(N)
+Searching - O(N)
+Access    - O(N)
+*/
+
 class Node {
-    constructor (value) {
+    constructor(value) {
         this.value = value;
         this.next = null;
     }
 }
 
-class LinkedList {
-    constructor(value) {
-        const newNode = new Node(value);
-        this.head = newNode;
-        this.tail = this.head;
-        this.length = 1;
+class SinglyLinkedList {
+    constructor() {
+        this.head = null;
+        this.next = null;
+        this.length = 0;
     }
-
     push(value) {
-        const newNode = new Node(value);
+        var newNode = new Node(value);
         if (!this.head) {
             this.head = newNode;
-            this.tail = newNode;
+            this.tail = this.head;
         } else {
             this.tail.next = newNode;
             this.tail = newNode;
@@ -25,30 +32,38 @@ class LinkedList {
         this.length++;
         return this;
     }
-
     pop() {
         if (!this.head) return undefined;
-        let temp = this.head;
-        let pre = this.head;
-        while (temp.next) {
-            pre = temp;
-            temp = temp.next;
+        let newTail = this.head;
+        let current = this.head;
+        while(current.next) {
+            newTail = current;
+            current = current.next;
         }
-        this.tail = pre;
+        this.tail = newTail;
         this.tail.next = null;
         this.length--;
-        if (this.length === 0) {
-            this.head = null;
+        if (length === 0) {
             this.tail = null;
+            this.head = null;
         }
-        return temp;
+        return current;
     }
-
+    shift() {
+        if (!this.head) return undefined;
+        let currentHead = this.head;
+        this.head = currentHead.next;
+        this.length--;
+        if (this.length === 0) {
+            this.tail = null
+        }
+        return currentHead;
+    }
     unshift(value) {
         const newNode = new Node(value);
         if (!this.head) {
             this.head = newNode;
-            this.tail = newNode;
+            this.tail = this.head;
         } else {
             newNode.next = this.head;
             this.head = newNode;
@@ -56,80 +71,66 @@ class LinkedList {
         this.length++;
         return this;
     }
-
-    shift() {
-        if (!this.head) return undefined;
-        let temp = this.head;
-        this.head = this.head.next;
-        temp.next = null;
-        this.length--;
-        if (this.length === 0) {
-            this.tail = null
+    get(index){
+        if (index < 0 || index >= this.length) return null;
+        let counter = 0;
+        let current = this.head;
+        while (counter !== index) {
+            current = current.next;
+            counter++;
         }
-        return temp;
+        return current;
     }
-
-    get(index) {
-        if (index < 0 || index >= this.length) {
-            return undefined;
-        }
-        let temp = this.head;
-        for (let i = 0; i < index; i++) {
-            temp = temp.next;
-        }
-        return temp;
-    }
-
-    set(index, value) {
-        let temp = this.get(index);
-        if (temp) {
-            temp.value = value;
+    set(index,value){
+        let targetNode = this.get(index);
+        if (targetNode) {
+            targetNode.value = value;
             return true;
         }
         return false;
     }
-
-    insert(index, value) {
-        if (index === 0) return this.unshift(value);
-        if (index === this.length) return this.push(value);
+    insert(index,value) {
         if (index < 0 || index > this.length) return false;
-        
-        const newNode = new Node(value);
-        const temp = this.get(index-1); 
+        if (index === this.length) return !!this.push(value);
+        if (index === 0) return !!this.unshift(value);
 
+        const newNode = new Node(value);
+        const previous = this.get(index-1);
+        const temp = previous.next;
+        previous.next = newNode;
         newNode.next = temp.next;
-        temp.next = newNode;
         this.length++;
         return true;
     }
-
     remove(index) {
-        if (index === 0) return this.shift();
-        if (index === this.length -1) return this.pop();
         if (index < 0 || index >= this.length) return undefined;
+        if (index === this.length - 1) return this.pop();
+        if (index === 0) return this.shift();
 
-        const before = this.get(index -1);
-        const temp = before.next;
-
-        before.next = temp.next;
-        temp.next = null;
+        const previous = this.get(index-1);
+        const removed = previous.next;
+        previous.next = removed.next;
         this.length--;
-        return temp;
+        return removed;
     }
-
     reverse() {
-        let temp = this.head;
+        let current = this.head;
         this.head = this.tail;
-        this.tail = temp;
-        let next = temp.next;
-        let prev = null;
+        this.tail = current;
+        let next = current.next;
+        let previous = null;
 
         for (let i = 0; i < this.length; i++) {
-            next = temp.next;
-            temp.next = prev;
-            prev = temp;
-            temp = next;
+            next = current.next;
+            current.next = previous;
+            previous = current;
+            current = next;
         }
         return this;
     }
 }
+
+// let list = new SinglyLinkedList();
+// list.push('foo');
+// list.push('bar');
+// list.push('baz');
