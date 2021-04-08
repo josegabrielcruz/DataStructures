@@ -1,9 +1,9 @@
 /*
 Big O of Doubly Linked List
 Insertion - O(1)
-Removal - O(1)
+Removal   - O(1)
 Searching - O(N) ( O(N/2) )
-Access - O(N)
+Access    - O(N)
 */
 
 
