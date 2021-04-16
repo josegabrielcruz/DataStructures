@@ -1,1 +1,1 @@
-# Implementations of various common data structures written in JavaScript
+# Implementations of various data structures written in JavaScript
