@@ -5,7 +5,6 @@ Searchgin - O(log n);
 (may vary depending on the tree configuration)
  */
 
-
 class Node {
   constructor(value) {
       this.value = value;
